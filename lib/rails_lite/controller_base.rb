@@ -21,14 +21,14 @@ class ControllerBase
   end
 
   def redirect_to(url)
-    raise "cannot render twice" if @response_built
+    raise "cannot render twice" if already_rendered?
     @resp.set_redirect(WEBrick::HTTPStatus[302], url)
     session.store_session(@resp)
     @response_built = true
   end
 
   def render_content(content, type)
-    raise "cannot render twice" if @response_built
+    raise "cannot render twice" if already_rendered?
     @resp.content_type = type
     @resp.body = content
     session.store_session(@resp)
@@ -44,5 +44,7 @@ class ControllerBase
   end
 
   def invoke_action(name)
+    self.send(name.to_sym)
+    self.render(name.to_sym) unless already_rendered?
   end
 end

@@ -24,17 +24,11 @@ class Params
     parsed_hash = {}
     shlw_hash.each do |k,v|
       key_arr = parse_key(k)
-      if key_arr.length == 1
-        parsed_hash[k] = v
-        next
-      end
-      parsed_hash[key_arr[0]] = {}
-      nested_hash = parsed_hash[key_arr[0]]
-      i = 1
-      while i < key_arr.length - 1
-        nested_hash[key_arr[i]] = {}
-        nested_hash = nested_hash[key_arr[i]]
-        i += 1
+      nested_hash = parsed_hash
+      key_arr.each_with_index do |key, idx|
+        break if idx == key_arr.length - 1
+        nested_hash[key] ||= {}
+        nested_hash = nested_hash[key]
       end
       nested_hash[key_arr[-1]] = v
     end

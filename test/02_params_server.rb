@@ -17,9 +17,10 @@ class ExampleController < ControllerBase
 
   def new
     page = <<-END
-<form action="/" method="post">
+<form action="/?a=3&b=4&c=3" method="post">
   <input type="text" name="cat[name][horse][monkey][dog]">
   <input type="text" name="cat[name][horse][monkey][owner]">
+  <input type="text" name="dog">
 
   <input type="submit">
 </form>
